@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
-import Carousel from "../components/Carousel";
+// import Carousel from "../components/Carousel";
 
 export default function Home() {
+  const [search, setSearch] = useState("");
   const [foodCat, setFoodCat] = useState([]);
   const [foodItem, setFoodItem] = useState([]);
 
@@ -33,7 +34,89 @@ export default function Home() {
         <Navbar />
       </div>
       <div>
-        <Carousel />
+        <div
+          id="carouselExampleControls"
+          className="carousel slide"
+          data-bs-ride="carousel"
+          style={{ objectFit: "contain !important" }}
+        >
+          <div className="carousel-inner" id="carousel">
+            <div className="carousel-caption" style={{ zIndex: "10" }}>
+              <div className="d-flex justify-content-center">
+                <input
+                  className="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+                {/* <button
+                  className="btn btn-outline-success text-white bg-success"
+                  type="submit"
+                >
+                  Search
+                </button> */}
+              </div>
+            </div>
+            <div className="carousel-item active">
+              <img
+                src="https://www.allrecipes.com/thmb/5JVfA7MxfTUPfRerQMdF-nGKsLY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/25473-the-perfect-basic-burger-DDMFS-4x3-56eaba3833fd4a26a82755bcd0be0c54.jpg"
+                className="d-block w-100"
+                alt="..."
+                style={{
+                  filter: "brightness(30%)",
+                }}
+              />
+            </div>
+            <div className="carousel-item">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/9/91/Pizza-3007395.jpg"
+                className="d-block w-100"
+                alt="..."
+                style={{
+                  filter: "brightness(30%)",
+                }}
+              />
+            </div>
+            <div className="carousel-item">
+              <img
+                src="https://assets.epicurious.com/photos/5988e3458e3ab375fe3c0caf/1:1/w_1280,c_limit/How-to-Make-Chicken-Alfredo-Pasta-hero-02082017.jpg"
+                className="d-block w-100"
+                alt="..."
+                style={{
+                  filter: "brightness(30%)",
+                }}
+              />
+            </div>
+          </div>
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev"
+          >
+            <span
+              className="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleControls"
+            data-bs-slide="next"
+          >
+            <span
+              className="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
+            <span className="visually-hidden">Next</span>
+          </button>
+        </div>
       </div>
       <div className="container">
         {foodCat !== [] ? (
@@ -46,7 +129,11 @@ export default function Home() {
                 <hr />
                 {foodItem !== [] ? (
                   foodItem
-                    .filter((item) => item.CategoryName === data.CategoryName)
+                    .filter(
+                      (item) =>
+                        item.CategoryName === data.CategoryName &&
+                        item.name.toLowerCase().includes(search.toLowerCase())
+                    )
                     .map((filteredItems) => {
                       return (
                         <div
@@ -54,10 +141,8 @@ export default function Home() {
                           className="col-12 col-md-6 col-lg-3 col-sm-3"
                         >
                           <Card
-                            itemName={filteredItems.name}
+                            foodItem={filteredItems}
                             options={filteredItems.options[0]}
-                            imgSrc={filteredItems.img}
-                            description={filteredItems.description}
                           />
                         </div>
                       );
@@ -69,7 +154,7 @@ export default function Home() {
             );
           })
         ) : (
-          <div>"""""''</div>
+          <div>"""""</div>
         )}
       </div>
       <div>
